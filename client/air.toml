@@ -1,0 +1,13 @@
+# air.toml
+
+# Entrypoint
+[build]
+cmd = "go build -o ./bin/server ./cmd/server/main.go"
+
+# Directories to watch
+[watcher]
+dirs = ["./", "./cmd", "./internal"]
+
+# Environment variables
+[runner]
+env = "APP_ENV=development"

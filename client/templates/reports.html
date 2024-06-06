@@ -1,0 +1,78 @@
+<div id="request-reports-container">
+    <div class="request-reports-container">
+        <div>
+            <h2>Report(s) Details</h2>
+        </div>
+        <div>
+            <h3 class="error-message">This report MUST NOT be printed or acted on.</h3>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="patient--details">
+            <span class="material-symbols-sharp">report</span>
+            <div class="card-content">
+                <div class="left">
+                    <div class="label-value">
+                        <h3 class="left-label">Visit Date:</h3>
+                        <h3 class="left-value">{{if .Request.AppointmentDate}}{{.Request.AppointmentDate.Format "02 January 2006"}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="left-label">Ward:</h3>
+                        <h3 class="left-value">{{if .Request.LocationDescription}}{{.Request.LocationDescription}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                </div>
+                <div class="middle">
+                    <div class="label-value">
+                        <h3 class="left-label">Procedure(s):</h3>
+                        <h3 class="left-value">{{if .Request.Examination}}{{.Request.Examination}}{{else}}UNKNOWN{{end}}
+                        </h3>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="label-value">
+                        <h3 class="right-label">Referring Dr. :</h3>
+                        <h3 class="right-value">
+                            {{if .Request.ClinicianTitle}}{{.Request.ClinicianTitle}}.{{else}}UNKNOWN{{end}}
+                            {{if .Request.ClinicianInitials}}{{.Request.ClinicianInitials}}{{end}}
+                            {{if .Request.ClinicianSurname}}{{.Request.ClinicianSurname}}{{end}}
+                        </h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="right-label">X-Ray Provided By:</h3>
+                        <h3 class="right-value">{{if .Request.SiteDescription}}{{.Request.SiteDescription}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Report Author</th>
+                    <th>Transcribed By</th>
+                    <th>Validated By</th>
+                    <th>Status</th>
+                    <th>Created On</th>
+                    <th>Validated On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Reports}}
+                <tr>
+                    <td>{{if .ProcedureDescription}}{{.ProcedureDescription}}{{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .ProcedureDescription}}{{.ProcedureDescription}}{{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .ExamSide}}{{.ExamSide}}{{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .RoomDescription}}{{.RoomDescription}} ({{if .RoomCode}}{{.RoomCode}}{{end}}){{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .ProcedureCode}}{{.ProcedureCode}}{{else}}UNKNOWN{{end}}</td>
+                </tr>
+                {{else}}
+                <tr class="error-message">
+                    <td colspan="5">No examinations available</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>

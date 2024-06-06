@@ -1,0 +1,1 @@
+GET http://localhost:8081/radisweb/patients/id-search?field=radisnumber&id=10000

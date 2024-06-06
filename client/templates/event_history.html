@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event History</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+
+<body>
+    <div class="patient-container">
+        <aside>
+            <div class="sidebar">
+                <a href="#" id="event-history-link" class="active hoverable">
+                    <span class="material-symbols-sharp">manage_search</span>
+                    <h5>Event History</h5>
+                </a>
+                <a id="request-details-link">
+                    <span class="material-symbols-sharp">inventory</span>
+                    <h5>Request Details</h5>
+                </a>
+                <a id="reports-link">
+                    <span class="material-symbols-sharp">report</span>
+                    <h5>Reports</h5>
+                </a>
+                <a id="film-library-link">
+                    <span class="material-symbols-sharp">movie</span>
+                    <h5>Film Library</h5>
+                </a>
+                <a id="online-images-link">
+                    <span class="material-symbols-sharp">animated_images</span>
+                    <h5>Online Images</h5>
+                </a>
+                <a id="help-link">
+                    <span class="material-symbols-sharp">help</span>
+                    <h5>Help</h5>
+                </a>
+                <a id="logout-link">
+                    <span class="material-symbols-sharp">logout</span>
+                    <h5>Logout</h5>
+                </a>
+            </div>
+        </aside>
+
+        <main>
+            <div class="patient-header">
+                <div class="patient-name">
+                    <h1>{{.Patient.Surname}}</h1>
+                    <h2>{{.Patient.Forename}}</h2>
+                </div>
+                {{if eq .Patient.DeceasedPatientFlag true}}
+                <div class="status">
+                    <h2>Deceased</h2>
+                </div>
+                {{end}}
+            </div>
+
+            <!-- Patient details Content -->
+            <div class="card">
+                <div class="patient--details">
+                    <span class="material-symbols-sharp">user_attributes</span>
+                    <div class="card-content">
+                        <div class="left">
+                            <div class="label-value">
+                                <h3 class="left-label">Title:</h3>
+                                <h3 class="left-value">{{if .Patient.Title}}{{.Patient.Title}}{{else}}UNKNOWNs{{end}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="left-label">Surname:</h3>
+                                <h3 class="left-value">{{.Patient.Surname}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="left-label">Forename(s):</h3>
+                                <h3 class="left-value">{{.Patient.Forename}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="left-label">Gender:</h3>
+                                <h3 class="left-value">{{if eq .Patient.Sex "M"}}Male{{else}}Female{{end}}</h3>
+                            </div>
+                        </div>
+                        <div class="middle">
+                            <div class="label-value">
+                                <h3 class="mid-label">Address:</h3>
+                                <h3 class="mid-value">{{if .Patient.Address1}}
+                                    {{.Patient.Address1}}
+                                    {{if .Patient.Address2}}, {{.Patient.Address2}}{{end}}
+                                    {{if .Patient.Address3}}, {{.Patient.Address3}}{{end}}
+                                    {{if .Patient.Address4}}, {{.Patient.Address4}}{{end}}
+                                    {{if .Patient.Address5}}, {{.Patient.Address5}}{{end}}
+                                    {{else if .Patient.Address2}}
+                                    {{.Patient.Address2}}
+                                    {{if .Patient.Address3}}, {{.Patient.Address3}}{{end}}
+                                    {{if .Patient.Address4}}, {{.Patient.Address4}}{{end}}
+                                    {{if .Patient.Address5}}, {{.Patient.Address5}}{{end}}
+                                    {{else if .Patient.Address3}}
+                                    {{.Patient.Address3}}
+                                    {{if .Patient.Address4}}, {{.Patient.Address4}}{{end}}
+                                    {{if .Patient.Address5}}, {{.Patient.Address5}}{{end}}
+                                    {{else if .Patient.Address4}}
+                                    {{.Patient.Address4}}
+                                    {{if .Patient.Address5}}, {{.Patient.Address5}}{{end}}
+                                    {{else if .Patient.Address5}}
+                                    {{.Patient.Address5}}
+                                    {{else}}
+                                    UNKNOWN
+                                    {{end}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="mid-label">Postcode:</h3>
+                                <h3 class="mid-value">{{if
+                                    .Patient.Postcode}}{{.Patient.Postcode}}{{else}}UNKNOWN{{end}}</h3>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="label-value">
+                                <h3 class="right-label">RadIS Number:</h3>
+                                <h3 class="right-value">{{.Patient.RadisNumber}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="right-label">Hospital Number:</h3>
+                                <h3 class="right-value">{{if
+                                    .Patient.HospitalNumber}}{{.Patient.HospitalNumber}}{{else}}UNKNOWN{{end}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="right-label">NHS Number:</h3>
+                                <h3 class="right-value">{{if
+                                    .Patient.NHSNumber}}{{.Patient.NHSNumber}}{{else}}UNKNOWN{{end}}</h3>
+                            </div>
+                            <div class="label-value">
+                                <h3 class="right-label">Date of Birth:</h3>
+                                <h3 class="right-value">{{if .Patient.Dob}}{{.Patient.Dob.Format "02 January 2006"}}{{else}}UNKNOWN{{end}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Event History Content -->
+            <div id="event-history-container">
+                <div class="content-table">
+                    <h2>Event History</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Referral Date</th>
+                                <th>Referring Doctor</th>
+                                <th>Hospital</th>
+                                <th>Ward</th>
+                                <th>Examinations</th>
+                            </tr>
+                        </thead>
+                        <tbody id="event-history-tbody">
+                            {{if .Events}}
+                            {{range .Events}}
+                            <tr hx-get="/radisweb/requests/request-details/{{.Pk_Request_Id}}"
+                                hx-target="#event-history-container" hx-swap="outerHTML">
+                                <td>{{if .EventDate}}{{.EventDate.Format "02 January 2006"}}{{else}}UNKNOWN{{end}}</td>
+                                <td>{{if .EventTime}}{{.EventTime}}{{else}}UNKNOWN{{end}}</td>
+                                <td class="{{if eq .Description "Did not Attend"}}danger{{else if eq
+                                    .Description "Cancellation" }}danger{{else if eq .Description "Rejected"
+                                    }}danger{{else if eq .Description "Pending" }}warning{{else if eq
+                                    .Description "Report Validated" }}success{{else}}primary{{end}}">
+                                    {{.Description}}</td>
+                                <td>{{if .DateReceived}}{{.DateReceived.Format "02 January 2006"}}{{end}}</td>
+                                <td>{{if .Doctor}}{{.Doctor}}{{else}}UNKNOWN{{end}}</td>
+                                <td>{{if .Site}}{{.Site}}{{else}}UNKNOWN{{end}}</td>
+                                <td>{{if .Ward}}{{.Ward}}{{else}}UNKNOWN{{end}}</td>
+                                <td>{{if .Examination}}{{.Examination}}{{else}}UNKNOWN{{end}}</td>
+                            </tr>
+                            {{end}}
+                            {{else}}
+                            <tr class="error-message">
+                                <td colspan="8">No event history available</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

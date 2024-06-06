@@ -1,0 +1,12 @@
+
+GET http://localhost:8081/radisweb/patients/advanced-search?surname=test&sex=f
+
+###
+
+GET http://localhost:8081/radisweb/patients/advanced-search?dob=1974-jul-09&sex=f
+
+###
+
+GET http://localhost:8081/radisweb/patients/advanced-search?forename=matt&dob=1974-jul-09&sex=m
+
+

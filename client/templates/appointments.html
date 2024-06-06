@@ -1,0 +1,139 @@
+<div id="request-details-container">
+    <div class="request-reports-container">
+        <div>
+            <h2>Request Details</h2>
+        </div>
+        {{if eq .Request.RequestStatusDescription "Visit"}}
+        <div class="report-button" hx-get="/radisweb/reports/report-details/{{.Request.Id}}"
+        hx-target="#request-details-container" hx-swap="outerHTML">
+            <button type="submit" class="form-button"> View Report</button>
+        </div>
+        {{end}}
+    </div>
+
+    <div class="card">
+        <div class="patient--details">
+            <span class="material-symbols-sharp">inventory</span>
+            <div class="card-content">
+                <div class="left">
+                    <div class="label-value">
+                        <h3 class="left-label">Priority:</h3>
+                        <h3 class="left-value">{{if .Request.PriorityDescription}}{{.Request.PriorityDescription}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="left-label">Appointment Date:</h3>
+                        <h3 class="left-value">{{if .Request.AppointmentDate}}{{.Request.AppointmentDate.Format "02 January 2006"}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="left-label">Appointment Time:</h3>
+                        <h3 class="left-value">{{if .Request.AppointmentTime}}{{.Request.AppointmentTime}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="left-label">Referral Date:</h3>
+                        <h3 class="left-value">{{if .Request.DateReceived}}{{.Request.DateReceived.Format "02 January 2006"}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="left-label">Referral Dr. :</h3>
+                        <h3 class="left-value">
+                            {{if .Request.ClinicianTitle}}{{.Request.ClinicianTitle}}{{else}}UNKNOWN{{end}}
+                            {{if .Request.ClinicianInitials}}{{.Request.ClinicianInitials}}{{end}}
+                            {{if .Request.ClinicianSurname}}{{.Request.ClinicianSurname}}{{end}}
+                        </h3>
+                    </div>
+                </div>
+                <div class="middle">
+                    <div class="label-value">
+                        <h3 class="mid-label">Referral Dr. Address:</h3>
+                        <h3 class="mid-value">{{if .Request.PracticeAddress1}}
+                            {{.Request.PracticeAddress1}}
+                            {{if .Request.PracticeAddress2}}, {{.Request.PracticeAddress2}}{{end}}
+                            {{if .Request.PracticeAddress3}}, {{.Request.PracticeAddress3}}{{end}}
+                            {{if .Request.PracticeAddress4}}, {{.Request.PracticeAddress4}}{{end}}
+                            {{if .Request.PracticeAddress5}}, {{.Request.PracticeAddress5}}{{end}}
+                            {{else if .Request.PracticeAddress2}}
+                            {{.Request.PracticeAddress2}}
+                            {{if .Request.PracticeAddress3}}, {{.Request.PracticeAddress3}}{{end}}
+                            {{if .Request.PracticeAddress4}}, {{.Request.PracticeAddress4}}{{end}}
+                            {{if .Request.PracticeAddress5}}, {{.Request.PracticeAddress5}}{{end}}
+                            {{else if .Request.PracticeAddress3}}
+                            {{.Request.PracticeAddress3}}
+                            {{if .Request.PracticeAddress4}}, {{.Request.PracticeAddress4}}{{end}}
+                            {{if .Request.PracticeAddress5}}, {{.Request.PracticeAddress5}}{{end}}
+                            {{else if .Request.PracticeAddress4}}
+                            {{.Request.PracticeAddress4}}
+                            {{if .Request.PracticeAddress5}}, {{.Request.PracticeAddress5}}{{end}}
+                            {{else if .Request.PracticeAddress5}}
+                            {{.Request.PracticeAddress5}}
+                            {{else}}
+                            UNKNOWN
+                            {{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="mid-label">Referral Dr. Postcode:</h3>
+                        <h3 class="mid-value">{{if .Request.PracticePostcode}}{{.Request.PracticePostcode}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="mid-label">X-Ray Provided By:</h3>
+                        <h3 class="mid-value">{{if .Request.SiteDescription}}{{.Request.SiteDescription}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="label-value">
+                        <h3 class="right-label">Ward:</h3>
+                        <h3 class="right-value">{{if .Request.LocationDescription}}{{.Request.LocationDescription}}
+                            ({{if .Request.LocationCode}}{{.Request.LocationCode}}){{end}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="right-label">Transport:</h3>
+                        <h3 class="right-value">{{if .Request.TransportDescription}}{{.Request.TransportDescription}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="right-label">Notes:</h3>
+                        <h3 class="right-value">{{if .Request.Alerts}}{{.Request.Alerts}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="right-label">Clinical Details:</h3>
+                        <h3 class="right-value">{{if .Request.ClinicalComments}}{{.Request.ClinicalComments}}{{else}}UNKNOWN{{end}}</h3>
+                    </div>
+                    <div class="label-value">
+                        <h3 class="right-label">Booked By:</h3>
+                        <h3 class="right-value">
+                            {{if .Request.BookedByTitle}}{{.Request.BookedByTitle}}{{else}}UNKNOWN{{end}}
+                            {{if .Request.BookedByForenames}} {{.Request.BookedByForenames}}{{end}}
+                            {{if .Request.BookedBySurname}} {{.Request.BookedBySurname}}{{end}}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-table">
+        <h2>Procedures</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Procedure No.</th>
+                    <th>Description</th>
+                    <th>Side</th>
+                    <th>Room</th>
+                    <th>Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Procedures}}
+                <tr>
+                    <td>1</td>
+                    <td>{{if .ProcedureDescription}}{{.ProcedureDescription}}{{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .ExamSide}}{{.ExamSide}}{{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .RoomDescription}}{{.RoomDescription}} ({{if .RoomCode}}{{.RoomCode}}{{end}}){{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .ProcedureCode}}{{.ProcedureCode}}{{else}}UNKNOWN{{end}}</td>
+                </tr>
+                {{else}}
+                <tr class="error-message">
+                    <td colspan="5">No examinations available</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>

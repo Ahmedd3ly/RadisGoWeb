@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+
+<body>
+
+    <div class="results-container" id="searchResults">
+        {{if .ErrorMessage}}
+        <div class="error--message">
+            {{.ErrorMessage}}
+        </div>
+        {{else}}
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Surname</th>
+                    <th>Forename</th>
+                    <th>Date of Birth</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Patients}}
+                <tr hx-get="/radisweb/patients/patient-details-history/{{.Id}}" hx-target="main" hx-swap="outerHTML">
+                    <td>{{.Surname}}</td>
+                    <td>{{.Forename}}</td>
+                    <td>{{if .Dob}}{{.Dob.Format "02-Jan-2006"}}{{else}}UNKNOWN{{end}}</td>
+                    <td>{{if .Address1}}
+                        {{.Address1}}
+                        {{if .Address2}}, {{.Address2}}{{end}}
+                        {{if .Address3}}, {{.Address3}}{{end}}
+                        {{if .Address4}}, {{.Address4}}{{end}}
+                        {{else if .Address2}}
+                        {{.Address2}}
+                        {{if .Address3}}, {{.Address3}}{{end}}
+                        {{if .Address4}}, {{.Address4}}{{end}}
+                        {{else if .Address3}}
+                        {{.Address3}}
+                        {{if .Address4}}, {{.Address4}}{{end}}
+                        {{else if .Address4}}
+                        {{.Address4}}
+                        {{else}}
+                        UNKNOWN
+                        {{end}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        {{end}}
+    </div>
+</body>
+
+</html>

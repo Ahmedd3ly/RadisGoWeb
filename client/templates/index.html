@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="/static/js/scripts.js"></script>
+</head>
+
+<body>
+    {{ template "header.html" . }}
+    <main>
+        <div class="search-container">
+            <form id="basicSearchForm" class="search-form" hx-get="/radisweb/patients/id-search/"
+                hx-target="#searchResults" hx-swap="innerHTML">
+                <div class="form-title">
+                    <h1>Basic Search</h1>
+                </div>
+                <div class="form-item">
+                    <div class="field-select">
+                        <label for="field" class="form-label">Search By:</label>
+                        <select id="field" name="field">
+                            <option value="RadisNumber">Radis Number</option>
+                            <option value="NHSNumber">NHS Number</option>
+                            <option value="HospitalNumber">Hospital Number</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-input" id="id" name="id"
+                        placeholder="Enter the patient's field number...">
+                    <button type="submit" class="form-button">Search</button>
+                </div>
+            </form>
+
+
+
+            <form id="advancedSearchForm" class="search-form" style="display:none;"
+                hx-get="/radisweb/patients/advanced-search/" hx-target="#searchResults" hx-swap="innerHTML">
+                <div class="form-title">
+                    <h1>Advanced Search</h1>
+                </div>
+                <div class="form-item">
+                    <div>
+                        <label for="surname" class="form-label">Surname:</label>
+                        <input type="text" class="form-input" id="surname" name="surname"
+                            placeholder="Enter the patient's surname...">
+                    </div>
+                    <div>
+                        <label for="forename" class="form-label">Forename:</label>
+                        <input type="text" class="form-input" id="forename" name="forename"
+                            placeholder="Enter the patient's forename...">
+                    </div>
+                    <div>
+                        <label for="dob" class="form-label">Date of Birth:</label>
+                        <input type="date" class="form-input" id="dob" name="dob"
+                            placeholder="Enter the patient's date of birth...">
+                    </div>
+                    <button type="submit" class="custom-button">Search</button>
+                </div>
+                <div class="form-label"> Gender:
+                    <input type="radio" id="male" name="sex" value="m" checked>
+                    <label for="male" class="form-label">Male</label>
+                
+                    <input type="radio" id="female" name="sex" value="f">
+                    <label for="female" class="form-label">Female</label>
+                </div>                
+            </form>
+
+            <form id="wardSearchForm" class="search-form" style="display:none;"
+                hx-get="/radisweb/patients/by-ward-last-week" hx-target="#searchResults" hx-swap="innerHTML">
+                <div class="form-title">
+                    <h1>Search By Ward</h1>
+                </div>
+                <div class="form-item">
+                    <label for="ward" class="form-label">Select Ward:</label>
+                    <select class="ward-select" id="ward" name="locationId">
+                    </select>
+                    <button type="submit" class="form-button">Search</button>
+                </div>
+                <div class="form-text">
+                    <p>Selecting a ward using the drop-down-list will return all patients with
+                        examinations performed in the last seven days (for that ward)</p>
+                </div>
+            </form>
+
+            <form id="consultantSearchForm" class="search-form" style="display:none;"
+                hx-get="/radisweb/patients/by-consultant-last-week" hx-target="#searchResults" hx-swap="innerHTML">
+                <div class="form-title">
+                    <h1>Search By Consultant</h1>
+                </div>
+                <div class="form-item">
+                    <label for="clinician" class="form-label">Select Consultant:</label>
+                    <select class="consultant-select" id="clinician" name="clinicianPracticeId">
+                    </select>
+                    <button type="submit" class="form-button">Search</button>
+                </div>
+                <div class="form-text">
+                    <p>Selecting a consultant from the drop-down-list will return all patients with
+                        examinations performed in the last seven days (for that consultant)</p>
+                </div>
+            </form>
+
+            <form id="wardApptSearch" class="search-form" style="display:none;" hx-get="/radisweb/patients/by-ward"
+                hx-target="#searchResults" hx-swap="innerHTML">
+                <div class="form-title">
+                    <h1>Appointments By Ward</h1>
+                </div>
+                <div class="form-item">
+                    <label for="wardAppt" class="form-label">Select Ward:</label>
+                    <select class="ward-select" id="wardAppt" name="locationId">
+                    </select>
+                    <button type="submit" class="form-button">Search</button>
+                </div>
+                <div class="form-text">
+                    <p>Selecting a ward using the drop-down-list will return all patients with
+                        appointments scheduled or placed on hold for that ward</p>
+                </div>
+            </form>
+
+            <form id="consultantApptSearch" class="search-form" style="display:none;"
+                hx-get="/radisweb/patients/by-consultant" hx-target="#searchResults" hx-swap="innerHTML">
+                <div class="form-title">
+                    <h1>Appointments By Consultant</h1>
+                </div>
+                <div class="form-item">
+                    <label for="clinicianAppt" class="form-label">Select Consultant:</label>
+                    <select class="consultant-select" id="clinicianAppt" name="clinicianPracticeId">
+                    </select>
+                    <button type="submit" class="form-button">Search</button>
+                </div>
+                <div class="form-text">
+                    <p>Selecting a consultant from the drop-down-list will return all patients for
+                        that
+                        consultant with appointments that are scheduled or placed on hold</p>
+                </div>
+            </form>
+        </div>
+        <div id="buttonsContainer" class="buttons-container">
+            <button class="form-buttons form-buttons-selected" onclick="showForm('basicSearchForm', this)">Basic
+                Search</button>
+            <button class="form-buttons" onclick="showForm('advancedSearchForm', this)">Advanced Search</button>
+            <button class="form-buttons" onclick="showForm('wardSearchForm', this)">Search by Ward</button>
+            <button class="form-buttons" onclick="showForm('consultantSearchForm', this)">Search by
+                Consultant</button>
+            <button class="form-buttons" onclick="showForm('wardApptSearch', this)">Appointments by
+                Ward</button>
+            <button class="form-buttons" onclick="showForm('consultantApptSearch', this)">Appointments by
+                Consultant</button>
+        </div>
+        <div class="results-container" id="searchResults">
+            <h4>Search results will be displayed here...</h4>
+        </div>
+    </main>
+</body>
+
+</html>

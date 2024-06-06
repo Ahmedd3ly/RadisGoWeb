@@ -1,0 +1,2 @@
+
+GET http://localhost:8081/radisweb/patients/by-consultant-last-week?clinicianPracticeId=3002000990819582

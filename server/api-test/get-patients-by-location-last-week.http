@@ -1,0 +1,1 @@
+GET http://localhost:8081/radisweb/patients/by-ward-last-week?locationId=88
